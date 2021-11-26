@@ -27,3 +27,21 @@ function smootheddata = datasmoothing(mydata)
     end
     smootheddata = newdata;
 end
+
+
+
+%%
+%Carbon Emissions trend
+
+carbonmat = load ('CarbonEmissions.txt','-ascii');
+
+year = carbonmat(:,1); %year
+fossil = carbonmat(:,2); % Fossil CO2 Emissions in tons
+change = carbonmat(:,3); %CO2 Emisions Change in percent
+capita = carbonmat(:,4); %CO2 Emisions per capita
+pop = carbonmat(:,5); %population
+popchange = carbonmat(:,6); %change in population in percentages
+
+subplot(3,1,1), plot(year,fossil,'r')
+subplot(3,1,2), plot(year, capita,'g')
+subplot(3,1,3), plot(fossil,capita,'b')
