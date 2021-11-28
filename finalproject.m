@@ -45,3 +45,16 @@ popchange = carbonmat(:,6); %change in population in percentages
 subplot(3,1,1), plot(year,fossil,'r')
 subplot(3,1,2), plot(year, capita,'g')
 subplot(3,1,3), plot(fossil,capita,'b')
+
+
+
+
+meantempdat = load("globalmeantemperature1880-2020.txt");
+
+temp = meantempdat(92:137,2);
+
+figure(2)
+plot(fossil,temp,'c');
+
+
+
