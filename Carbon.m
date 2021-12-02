@@ -3,12 +3,12 @@
 clear;
 clc;
 
-carbonmat = load ('CarbonEmissions.txt','-ascii');
-gtemp = load('globalmeantemperature1880-2020.txt','-ascii');
-gtempyear = gtemp(92:137,1);
-gtempdeg = gtemp(:,2);
-tempsmooth = datasmoothing(gtempdeg);
-tempsmooth = tempsmooth(92:137,1);
+carbonmat = load ('CarbonEmissions.txt','-ascii'); %loads the CO2 Emissions data
+gtemp = load('globalmeantemperature1880-2020.txt','-ascii'); %loads the Global Mean Temperatures data
+gtempyear = gtemp(92:137,1); %takes the years 1971 to 2016
+gtempdeg = gtemp(:,2); %global mean temperatures
+tempsmooth = datasmoothing(gtempdeg); %smooths out the data
+tempsmooth = tempsmooth(92:137,1); %takes the global mean temperatures from years 1971 to 2016
 
 
 year = rot180(carbonmat(:,1)); %year
@@ -20,73 +20,75 @@ popchange = rot180(carbonmat(:,6)); %change in population in percentages
 
 figure(1)
 
-subplot(3,1,1), plot(year,fossil,'-r^')
+subplot(3,1,1), plot(year,fossil,'-r^') %plots in the top the graph that shows the Fossil CO2 Emissions trend
 xlabel('Year');
 ylabel('Fossil CO2 Emissions(tons)');
 title('Fossil CO2 Emissions Over the Years');
 
-subplot(3,1,2), plot(year, capita,'-g*')
+subplot(3,1,2), plot(year, capita,'-g*') %plots in the middle the graph that shows the change of CO2 Emissions per capita trend
 xlabel('Year');
 ylabel('CO2 Emissions per capita');
 title('CO2 Emissions per capita Over the Years');
 
-subplot(3,1,3), plot(fossil,capita,'-ob')
+subplot(3,1,3), plot(fossil,capita,'-ob') %plots in the bottom the graph of how Fossil CO2 Emisssions changes with CO2 Emissions per capita
 xlabel('Fossil CO2 Emissions(tons)');
 ylabel('CO2 Emissions per capita');
 title('Fossil CO2 Emissions to CO2 Emissions per Capita');
 
 figure(2)
 
-plot(fossil,tempsmooth,'m')
+plot(fossil,tempsmooth,'m') %plots the graph the shows how global mean temperatures are affected by fossil CO2 Emissions
 xlabel('Fossil CO2 Emissions(tons)');
 ylabel('Global Average Temperatures');
 title('Fossil CO2 Emissions Affecting Global Temperatures Over Time');
 hold on
-a = polyfit(fossil,tempsmooth,1);
+%plots the line of best fit for the above graph
+a = polyfit(fossil,tempsmooth,1); 
 b = polyval(a,fossil);
 plot(fossil,b,'LineWidth',3)
 hold off
 %GlobalTemp = 3.9550*10^-11*Fossil - 0.588
 
-%do a question asking by what increase or decrease in the next decade
-y = input('How many years in the future do you want to see a trend for Carbon Emissions? ');
+
+%Now to predict based on data inputted by the user
+y = input('How many years in the future do you want to see a trend for Carbon Emissions? '); %this allows for many inputted years
 vec = zeros(y);
 for i = 1:y
-    x = input('Please input in a percent of how much you want to see the Carbon Emissions change in the next year: ');
-    vec(i) = x;
+    x = input('Please input in a percent of how much you want to see the Carbon Emissions change in the next year: '); %change in percent from the previous year of fossil emissions
+    vec(i) = x; %puts all the values in the first column of the matrix
 end
 
 newdat = vec;
 
-newdat = newdat/100;
+newdat = newdat/100; %converts the percentage to a decimal
 
 
 anewset = zeros(y);
-anewset(1) = (fossil(1))*(newdat(1)) + fossil(1);
+anewset(1) = (fossil(end))*(newdat(1)) + fossil(end); %now takes the previous years CO2 Emissions and adds the change of CO2 Emissions according to the inputted data
 for i = 2:y
-    anewset(i) = anewset(i-1)*(newdat(i)) + anewset(i-1);
+    anewset(i) = anewset(i-1)*(newdat(i)) + anewset(i-1); %puts all of this data into the first column of the matrix
 end
 
 Years = zeros(y);
 for i = 1:y
-    Years(i) = i;
+    Years(i) = i; %finds the amount of years of data inputted
 end
 
-Years = Years(:,1);
-PredictTrend = anewset(:,1);
+Years = Years(:,1); %Years
+PredictTrend = anewset(:,1); %New CO2 Emissions
 
 
 figure(3)
 f = polyfit(Years,PredictTrend,1);
 g = polyval(f,Years);
-plot(Years,g,'r',Years,PredictTrend,'b*')
+plot(Years,g,'r',Years,PredictTrend,'b*') %gives line of best fit of the data inputted of new CO2 Emissions over time
 
 xlabel('Years After 2016');
 ylabel('Fossil CO2 Emissions');
 
 
 
-
+%sees if the trend is increasing solely based on slope from polyfit
 if sign(f(1))>0
     trend = 'increasing';
 elseif sign(f(1))<0
@@ -95,9 +97,12 @@ else
     trend = 'constant';
 end
 
-fprintf('\n According to the values inputted, the Fossil CO2 Emissions will be on average %s \n by %d tons in %d years.',trend,abs(f(1)),y);
-z = a(1)*f(1)-0.588;
-fprintf('\n Based on this trend, and since Emissions and the Global Mean Temperatures have a linear relationship,\n the Global Temperatures will be at %d by the year %d.',z,y+2016);
+fprintf('\n According to the values inputted, the Fossil CO2 Emissions will be on average %s \n by %d tons per year for %d years.',trend,abs(f(1)),y);
+j = PredictTrend(end);
+w = 3.9550*10^-11*j - 0.588;
+%Fossil CO2 Emissions last term j = PredictTrend(end)
+%Global Mean Temperatures last term w = 3.9550*10^-11*j - 0.588
+fprintf('\n Based on this trend, and since Emissions and the Global Mean Temperatures have a linear relationship,\n the Global Temperatures will be at %d by the year %d.',w,y+2016);
 
 
 
@@ -106,7 +111,7 @@ fprintf('\n Based on this trend, and since Emissions and the Global Mean Tempera
 
 
 
-function matri = rot180(vector)
+function matri = rot180(vector) %rotates a matrix 180 degrees because the data was flipped
 
 [r, c] = size(vector);
 matri = zeros(r,c);
@@ -118,7 +123,7 @@ while r>0
 end
 end
 
-function smootheddata = datasmoothing(mydata)
+function smootheddata = datasmoothing(mydata) %smooths the data graph by averaging three points and plotting that point
     newdata = zeros(size(mydata));
     newdata(1,1) = mydata(1,1);
     newdata(141,1) = mydata(141,1);
