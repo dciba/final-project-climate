@@ -4,11 +4,6 @@ clear;
 clc;
 
 carbonmat = load ('CarbonEmissions.txt','-ascii'); %loads the CO2 Emissions data
-gtemp = load('globalmeantemperature1880-2020.txt','-ascii'); %loads the Global Mean Temperatures data
-gtempyear = gtemp(92:137,1); %takes the years 1971 to 2016
-gtempdeg = gtemp(:,2); %global mean temperatures
-tempsmooth = datasmoothing(gtempdeg); %smooths out the data
-tempsmooth = tempsmooth(92:137,1); %takes the global mean temperatures from years 1971 to 2016
 
 
 year = rot180(carbonmat(:,1)); %year
@@ -35,19 +30,6 @@ xlabel('Fossil CO2 Emissions(tons)');
 ylabel('CO2 Emissions per capita');
 title('Fossil CO2 Emissions to CO2 Emissions per Capita');
 
-figure(2)
-
-plot(fossil,tempsmooth,'m') %plots the graph the shows how global mean temperatures are affected by fossil CO2 Emissions
-xlabel('Fossil CO2 Emissions(tons)');
-ylabel('Global Average Temperatures');
-title('Fossil CO2 Emissions Affecting Global Temperatures Over Time');
-hold on
-%plots the line of best fit for the above graph
-a = polyfit(fossil,tempsmooth,1); 
-b = polyval(a,fossil);
-plot(fossil,b,'LineWidth',3)
-hold off
-%GlobalTemp = 3.9550*10^-11*Fossil - 0.588
 
 
 %Now to predict based on data inputted by the user
@@ -78,6 +60,8 @@ Years = Years(:,1); %Years
 PredictTrend = anewset(:,1); %New CO2 Emissions
 
 
+
+
 figure(3)
 f = polyfit(Years,PredictTrend,1);
 g = polyval(f,Years);
@@ -98,17 +82,99 @@ else
 end
 
 fprintf('\n According to the values inputted, the Fossil CO2 Emissions will be on average %s \n by %d tons per year for %d years.',trend,abs(f(1)),y);
+
+gtemp = load('globalmeantemperature1880-2020.txt','-ascii'); %loads the Global Mean Temperatures data
+ocean = load('oceanheatcontent.txt','-ascii'); %loads the ocean heat content data
+arctic = load('arctic_sea_ice_extent.txt'); %loads the arctic ice data
+
+fossilyear = rot90(carbonmat(1:38,1),2);%takes the years 1971 to 2016
+fossile = rot90(carbonmat(1:38,2),2);%fossil emissions
+
+gtempyear = gtemp(100:137,1); %takes the years 1971 to 2016
+gtempdeg = gtemp(:,2); %global mean temperatures
+tempsmooth = datasmoothing(gtempdeg); %smooths out the data
+tempsmooth = tempsmooth(100:137,1); %takes the global mean temperatures from years 1971 to 2016
+
+oceanyear = ocean(23:60,1);%takes the years 1971 to 2016
+oceanheat = ocean(23:60,2);%ocean heat content
+oceansmooth = datasmoothing(oceanheat);
+
+arcticyear = arctic(1:38,1);%takes the years 1971 to 2016
+arcticice = arctic(1:38,3);%arctic ice content
+arcticsmooth = datasmoothing(arcticice);
+
+figure(4)
+relation(fossile,tempsmooth);
+xlabel('Fossil CO2 Emissions(tons)');
+ylabel('Global Average Temperatures');
+title('Fossil CO2 Emissions Affecting Global Temperatures Over Time');
+a1 = polyfit(fossile,tempsmooth,1); 
+b1 = polyval(a1,fossile);
+%finds the linear relationship between global temperatures and fossil
+%emissions
+
+
+figure(5)
+relation(fossile,oceansmooth);
+xlabel('Fossil CO2 Emissions(tons)');
+ylabel('Ocean Heat Content');
+title('Fossil CO2 Emissions Affecting Ocean Heat Content Over Time');
+a2 = polyfit(fossile,oceansmooth,1); 
+b2 = polyval(a2,fossile);
+%finds the linear relationship between ocean heat content and fossil
+%emissions
+
+
+figure(6)
+relation(fossile,arcticsmooth);
+xlabel('Fossil CO2 Emissions(tons)');
+ylabel('Arctic Sea Ice Content');
+title('Fossil CO2 Emissions Affecting Arctic Sea Ice Content Over Time');
+a3 = polyfit(fossile,arcticsmooth,1); 
+b3 = polyval(a3,fossile);
+%finds the linear relationship between Arctic Sea Ice Content and fossil
+%emissions
+
+
 j = PredictTrend(end);
-w = 3.9550*10^-11*j - 0.588;
+GlobalTemp = 3.4904*10^-11*j - 0.4495;
+OceanHeat = 1.2597*10^-9*j - 25.4468;
+Arctic = -1.724*10^-10 *j +10.6839;
+
 %Fossil CO2 Emissions last term j = PredictTrend(end)
-%Global Mean Temperatures last term w = 3.9550*10^-11*j - 0.588
-fprintf('\n Based on this trend, and since Emissions and the Global Mean Temperatures have a linear relationship,\n the Global Temperatures will be at %d by the year %d.',w,y+2016);
+%Global Mean Temperatures last term  = 3.9550*10^-11*j - 0.588
+%Ocean Heat Content last term =  1.2597*10^-9*j - 25.4468
+%Arctic Ice last term = -1.724*10^-10 *j +10.6839
+
+fprintf('\n Based on this trend, and since Emissions and the Global Mean Temperatures have a positive linear relationship,\n the Global Temperatures will be at %d by the year %d.',GlobalTemp,y+2016);
+fprintf('\n Based on this trend, and since Emissions and the Ocean Heat Content have a positive linear relationship,\n the Ocean Heat will be at %d by the year %d.',OceanHeat,y+2016);
+fprintf('\n Based on this trend, and since Emissions and the Arctic Ice Content have a negative linear relationship,\n the Arctic Ice Extent will be at %d by the year %d.',Arctic,y+2016);
 
 
 
 
+function relation(fossil,smooth)
+plot(fossil,smooth,'m') %plots the graph the shows how global mean temperatures are affected by fossil CO2 Emissions
+hold on
+%plots the line of best fit for the above graph
+a = polyfit(fossil,smooth,1); 
+b = polyval(a,fossil);
+plot(fossil,b,'LineWidth',3)
+hold off
+
+end
 
 
+function smootheddata = datasmoothing(mydata) %smooths the data graph by averaging three points and plotting that point
+    newdata = zeros(size(mydata));
+    [r,c] = size(mydata);
+    newdata(1,1) = mydata(1,1);
+    newdata(r,1) = mydata(r,1);
+    for i = 2:1:(r-1)
+        newdata(i,1) = (mydata(i-1,1) + mydata(i,1) + mydata(i+1,1)) / 3;
+    end
+    smootheddata = newdata;
+end
 
 
 function matri = rot180(vector) %rotates a matrix 180 degrees because the data was flipped
@@ -123,13 +189,5 @@ while r>0
 end
 end
 
-function smootheddata = datasmoothing(mydata) %smooths the data graph by averaging three points and plotting that point
-    newdata = zeros(size(mydata));
-    newdata(1,1) = mydata(1,1);
-    newdata(141,1) = mydata(141,1);
-    for i = 2:1:140
-        newdata(i,1) = (mydata(i-1,1) + mydata(i,1) + mydata(i+1,1)) / 3;
-    end
-    smootheddata = newdata;
-end
+    
     
