@@ -13,7 +13,7 @@ title('Ocean Heat Content from 1992-2017');
 
 %prompts user to input a value of years into the future for code to use
 disp('When prompted, please input a number between 0-150 for best results')
-future= input('For how many years after 2017 would you like to predict?');
+future= input('For how many years after 2017 would you like to predict Ocean Heat Content?');
 
 %if statements ensure that only numbers in the range of 0-150 are accepted
 if future<0     %if statement for numbers less than 0
