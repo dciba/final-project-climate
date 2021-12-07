@@ -1,3 +1,6 @@
+clear;
+clc;
+
 %loads data into MATLAB, stores in variable "oceandata"
 oceandata= load('oceanheatcontent1957-2018.txt');
 
