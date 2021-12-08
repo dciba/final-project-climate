@@ -69,6 +69,7 @@ plot(Years,g,'r',Years,PredictTrend,'b*') %gives line of best fit of the data in
 
 xlabel('Years After 2016');
 ylabel('Fossil CO2 Emissions');
+title('Predicted CO2 Emissions After 2016');
 
 
 
@@ -191,3 +192,6 @@ while r>0
    r= r-1;
 end
 end
+
+    
+    
