@@ -81,7 +81,10 @@ else
     trend = 'constant';
 end
 
-fprintf('\n According to the values inputted, the Fossil CO2 Emissions will be on average %s \n by %d tons per year for %d years.',trend,abs(f(1)),y);
+fprintf('\n According to the values inputted, the Fossil CO2 Emissions will be on average %s \n by %d tons per year for %d years.',trend,abs(f(1)),y); %describes new trend of CO2 Emissions
+
+%Now describing relationship between CO2 and global mean temperature, ocean
+%heat content, and arctic sea ice extent
 
 gtemp = load('globalmeantemperature1880-2020.txt','-ascii'); %loads the Global Mean Temperatures data
 ocean = load('oceanheatcontent.txt','-ascii'); %loads the ocean heat content data
@@ -147,8 +150,8 @@ Arctic = -1.724*10^-10 *j +10.6839;
 %Arctic Ice last term = -1.724*10^-10 *j +10.6839
 
 fprintf('\n Based on this trend, and since Emissions and the Global Mean Temperatures have a positive linear relationship,\n the Global Temperatures will be at %d by the year %d.',GlobalTemp,y+2016);
-fprintf('\n Based on this trend, and since Emissions and the Ocean Heat Content have a positive linear relationship,\n the Ocean Heat will be at %d by the year %d.',OceanHeat,y+2016);
-fprintf('\n Based on this trend, and since Emissions and the Arctic Ice Content have a negative linear relationship,\n the Arctic Ice Extent will be at %d by the year %d.',Arctic,y+2016);
+fprintf('\n Based on this trend, and since Emissions and the Ocean Heat Content have a positive linear relationship,\n the Ocean Heat Content will be at %d by the year %d.',OceanHeat,y+2016);
+fprintf('\n Based on this trend, and since Emissions and the Arctic Ice Content have a negative linear relationship,\n the Arctic Ice Extent will be at %d  by the year %d.',Arctic,y+2016);
 
 
 
@@ -188,6 +191,3 @@ while r>0
    r= r-1;
 end
 end
-
-    
-    
