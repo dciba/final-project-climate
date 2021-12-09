@@ -4,5 +4,5 @@ We analyzed our data by looking at trends across a multitude of climate change f
 
 main.m - Run this m file to go through the entire project one script at a time.
 
-You can also run each m file separately to look at the analyses one at a time.
+You can also run each m file separately to look at the analyses on their own.
 
