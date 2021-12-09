@@ -3,6 +3,10 @@ clearvars;clc;
 %Analyzing temperature data over the past 140 years to find trends and
 %extrapolate into the future.
 
+%tell the user what the script is doing
+disp("Figure 1 shows plots of change in average temperature over time.");
+disp("Using polynomial approximations, we can guess what the average");
+disp("temperature might be for some number of years in the future.");
 tempdata = load("globalmeantemperature1880-2020.txt");
 
 %Changing the size and position of the figure

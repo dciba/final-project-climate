@@ -5,19 +5,24 @@ clc;clearvars;
 globalmeantemperature;
 
 input("Press enter to move to the next file: ");
+close all;
+clearvars;
 
 %Richie's File
 final_project_ice_extent;
 
 input("Press enter to move to the next file: ");
+close all;
+clearvars;
+
+%Jonathan's File
+oceanheatcontent;
+
+input("Press enter to move to the next file: ");
+close all;
+clearvars;
 
 %Rishul's File
 Carbon;
-
-input("Press enter to move to the next file: ");
-
-%Jonathan's File
-
-%todo
 
 
