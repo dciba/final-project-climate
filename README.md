@@ -1,9 +1,5 @@
 # final-project-climate
 
-damn this is cool af
+dear jonathan your code works but matlab gets mad at it and displays an error when you run it please fix thanks
 
-this feels so professional
-
-I made my part of the project and added a 
-"main" m file to go through each of our 
-contributions one at a time. -David
+-david
