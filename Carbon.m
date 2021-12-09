@@ -99,8 +99,15 @@ gtempdeg = gtemp(:,2); %global mean temperatures
 tempsmooth = datasmoothing(gtempdeg); %smooths out the data
 tempsmooth = tempsmooth(100:137,1); %takes the global mean temperatures from years 1971 to 2016
 
-oceanyear = ocean(23:60,1);%takes the years 1971 to 2016
-oceanheat = ocean(23:60,2);%ocean heat content
+oceanyear = [1992:2016];%takes the years 1971 to 2016
+oceanheat = zeros(25,1);%ocean heat content
+x = -11;
+i=1;
+while i<26
+    oceanheat(i) = mean(ocean((x+12):(x+23),1));
+    x = x+12;
+    i = i+1;
+end  
 oceansmooth = datasmoothing(oceanheat);
 
 arcticyear = arctic(1:38,1);%takes the years 1971 to 2016
@@ -108,7 +115,7 @@ arcticice = arctic(1:38,3);%arctic ice content
 arcticsmooth = datasmoothing(arcticice);
 
 figure(4)
-relation(fossile,tempsmooth);
+relat(fossile,tempsmooth);
 xlabel('Fossil CO2 Emissions(tons)');
 ylabel('Global Average Temperatures');
 title('Fossil CO2 Emissions Affecting Global Temperatures Over Time');
@@ -119,18 +126,18 @@ b1 = polyval(a1,fossile);
 
 
 figure(5)
-relation(fossile,oceansmooth);
+relat(fossile(14:38),oceansmooth);
 xlabel('Fossil CO2 Emissions(tons)');
 ylabel('Ocean Heat Content');
 title('Fossil CO2 Emissions Affecting Ocean Heat Content Over Time');
-a2 = polyfit(fossile,oceansmooth,1); 
-b2 = polyval(a2,fossile);
+a2 = polyfit(fossile(14:38),oceansmooth,1); 
+b2 = polyval(a2,fossile(14:38));
 %finds the linear relationship between ocean heat content and fossil
 %emissions
 
 
 figure(6)
-relation(fossile,arcticsmooth);
+relat(fossile,arcticsmooth);
 xlabel('Fossil CO2 Emissions(tons)');
 ylabel('Arctic Sea Ice Content');
 title('Fossil CO2 Emissions Affecting Arctic Sea Ice Content Over Time');
@@ -157,7 +164,7 @@ fprintf('\n Based on this trend, and since Emissions and the Arctic Ice Content 
 
 
 
-function relation(fossil,smooth)
+function relat(fossil,smooth)
 plot(fossil,smooth,'m') %plots the graph the shows how global mean temperatures are affected by fossil CO2 Emissions
 hold on
 %plots the line of best fit for the above graph
