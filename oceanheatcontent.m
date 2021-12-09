@@ -18,12 +18,12 @@ future= input('For how many years after 2018 would you like to predict the chang
 %if statements ensure that only numbers in the range of 0-150 are accepted
 while future<0     %if statement for numbers less than 0
     disp('Please enter a number between 0-150!')
-    future=input('For how many years after 2018 would you like to predict?');
+    future=input('For how many years after 2018 would you like to predict? ');
 end
 
 while future>150   %if statement for numbers greater than 150
     disp('Please enter a number between 0-150!')
-    future=input('For how many years after 2018 would you like to predict?');
+    future=input('For how many years after 2018 would you like to predict? ');
 end
 
 %the actual year into the future being predicted
