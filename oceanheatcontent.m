@@ -60,5 +60,5 @@ poly2Heat= max(polybestfit2);
 
 %displaying the numerical results for the inputed amount of years into
 %the future
-fprintf('Following a linear best fit, there will be a change of %d zettajoules in ocean heat content %d years into the future (%d).\n', linearHeat, future, futureyear);   
-fprintf('Following a polynomial best fit of degree 2, there will be a change of %d zettajoules in ocean heat content %d years into the future (%d).\n', poly2Heat, future, futureyear);
+fprintf('Following a linear best fit, there will be a change of %d zettajoules in ocean heat content from 1957 to %d years into the future (%d).\n', linearHeat, future, futureyear);   
+fprintf('Following a polynomial best fit of degree 2, there will be a change of %d zettajoules in ocean heat content from 1957 to %d years into the future (%d).\n', poly2Heat, future, futureyear);
