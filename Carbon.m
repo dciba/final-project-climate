@@ -88,7 +88,7 @@ fprintf('\n According to the values inputted, the Fossil CO2 Emissions will be o
 %heat content, and arctic sea ice extent
 
 gtemp = load('globalmeantemperature1880-2020.txt','-ascii'); %loads the Global Mean Temperatures data
-ocean = load('oceanheatcontent.txt','-ascii'); %loads the ocean heat content data
+ocean = load('oceanheatcontent1957-2018.txt','-ascii'); %loads the ocean heat content data
 arctic = load('arctic_sea_ice_extent.txt'); %loads the arctic ice data
 
 fossilyear = rot90(carbonmat(1:38,1),2);%takes the years 1971 to 2016
